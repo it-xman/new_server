@@ -22,13 +22,13 @@ export class UploadController {
         return this.db
     }
 
-    @Post()
+    @Post(':id')
     @UseInterceptors(FileInterceptor('file'))
-    async upload(@UploadedFile('file') file) {
-        let hasBucket = await this.DB().bucketExists('userimage');
+    async upload(@UploadedFile('file') file, @Param('id') id: string) {
+        let hasBucket = await this.DB().bucketExists(id);
 
         if (!hasBucket) {
-            await this.DB().makeBucket('userimage', 'cn-north-1')
+            await this.DB().makeBucket(id, 'cn-north-1')
         }
         let metaData = {
             'Content-Type': `${file.mimetype}`,
@@ -36,10 +36,10 @@ export class UploadController {
             'example': 5678
         }
 
-        let res = await this.DB().putObject('userimage', file.originalname, file.buffer, metaData)
+        let res = await this.DB().putObject(id, file.originalname, file.buffer, metaData)
         if (res) {
             return {
-                url: await this.DB().presignedUrl('GET', 'userimage', file.originalname)
+                url: await this.DB().presignedUrl('GET', id, file.originalname)
             }
         }
         return {
@@ -48,13 +48,13 @@ export class UploadController {
         }
     }
 
-    @Delete(':id')
-    del(@Param('id') id: string) {
-        this.DB().removeObject('userimage', id, (err) => {
-            if (err) {
-                return console.log(err)
-            }
-            console.log(`删除${id}成功`)
-        })
-    }
+    // @Delete(':id')
+    // del(@Param('id') id: string) {
+    //     this.DB().removeObject('userimage', id, (err) => {
+    //         if (err) {
+    //             return console.log(err)
+    //         }
+    //         console.log(`删除${id}成功`)
+    //     })
+    // }
 }
