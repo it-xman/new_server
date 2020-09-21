@@ -28,6 +28,7 @@
     "@nestjs/swagger": "^4.6.0",
     "@typegoose/typegoose": "^7.4.0",
     "@types/mongoose": "^5.7.36",
+    "jsonwebtoken": "^8.5.1",
     "minio": "^7.0.16",
     "mongoose": "^5.10.6",
     "nestjs-mongoose-crud": "^2.0.0",
