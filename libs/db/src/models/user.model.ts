@@ -13,7 +13,7 @@ export class UserModel {
         description: '用户名'
     })
     @prop()
-    username: string
+    username: string | number
 
     @ApiProperty({
         description: '密码'

@@ -6,6 +6,7 @@ export class UserDto {
     example: 'user'
   })
   readonly username: string | number;
+
   @ApiProperty({
     description: '密码',
     example: 'pass'

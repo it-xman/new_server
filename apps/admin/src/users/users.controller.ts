@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { Crud } from 'nestjs-mongoose-crud';
 import { ApiTags } from '@nestjs/swagger';
 import { InjectModel } from 'nestjs-typegoose';
@@ -35,7 +35,7 @@ export class UsersController {
   }
 
   @Post('register')
-  async post(@Body() userDto: UserDto) {
+  async createUser(@Body() userDto: UserDto) {
     let user = await this.model.findOne({
       username: userDto.username,
     });

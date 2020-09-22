@@ -13,7 +13,7 @@ export class CourseModel {
         description: '课程名称'
     })
     @prop()
-    name: string
+    name: string | number
 
     @ApiProperty({
         description: '封面图'
