@@ -24,6 +24,10 @@ export class UsersController {
   //   console.log(id);
   //   console.log(next);
   // }
+  async userLimit(id) {
+    let limit =  await this.model.findById(id)
+    return limit.limit;
+  }
 
 
   @Post('')
@@ -36,7 +40,7 @@ export class UsersController {
 
   @Post('register')
   async post(@Body() userDto: UserDto) {
-    const user = await this.model.findOne({
+    let user = await this.model.findOne({
       username: userDto.username,
     });
     if (user) {
@@ -54,7 +58,7 @@ export class UsersController {
 
   @Post('login')
   async login(@Body() userDto: UserDto) {
-    const userName = await this.model.findOne({
+    let userName = await this.model.findOne({
       username: userDto.username,
     });
     if (!userName) {
@@ -63,7 +67,7 @@ export class UsersController {
         message: '用户名不存在',
       };
     }
-    const passWd = await this.model.findOne({
+    let passWd = await this.model.findOne({
       password: userDto.password,
     });
 
@@ -79,7 +83,8 @@ export class UsersController {
     return {
       status: 200,
       // token: token,
-      id: passWd._id
+      id: passWd._id,
+      limit: await this.userLimit(userName._id)
     };
   }
 }
