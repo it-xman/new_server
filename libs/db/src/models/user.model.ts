@@ -10,13 +10,13 @@ import {ApiProperty} from "@nestjs/swagger";
 
 export class UserModel {
     @ApiProperty({
-        description: '管理员用户名'
+        description: '用户名'
     })
     @prop()
     username: string
 
     @ApiProperty({
-        description: '管理员密码'
+        description: '密码'
     })
     @prop()
     password: string
