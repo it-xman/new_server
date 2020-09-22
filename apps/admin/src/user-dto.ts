@@ -12,4 +12,16 @@ export class UserDto {
     example: 'pass'
   })
   readonly password: string;
+
+  @ApiProperty({
+    description: '注册时用昵称',
+    example: 'nickname'
+  })
+  readonly nickname: string | number;
+
+  @ApiProperty({
+    description: '权限',
+    example: 'limit'
+  })
+  readonly limit: string | number;
 }

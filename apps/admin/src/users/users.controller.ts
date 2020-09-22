@@ -26,13 +26,13 @@ export class UsersController {
   // }
 
 
-  @Post('')
-  async getAll() {
-    return {
-      status: 404,
-      message: '啥都没有，不给你看',
-    };
-  }
+  // @Post('')
+  // async getAll() {
+  //   return {
+  //     status: 404,
+  //     message: '啥都没有，不给你看',
+  //   };
+  // }
 
   @Post('register')
   async createUser(@Body() userDto: UserDto) {
@@ -79,8 +79,12 @@ export class UsersController {
     return {
       status: 200,
       // token: token,
-      id: userName._id,
-      limit: userName.limit
+      data: {
+        username: userName.username,
+        id: userName._id,
+        limit: userName.limit,
+        nickname: userName.nickname,
+      },
     };
   }
 }
