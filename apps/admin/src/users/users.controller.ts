@@ -24,10 +24,6 @@ export class UsersController {
   //   console.log(id);
   //   console.log(next);
   // }
-  async userLimit(id) {
-    let limit =  await this.model.findById(id)
-    return limit.limit;
-  }
 
 
   @Post('')
@@ -74,7 +70,7 @@ export class UsersController {
     if (!passWd) {
       return {
         status: 422,
-        message: '密码错误',
+        message: '用户名或密码输入错误',
       };
     }
 
@@ -83,8 +79,8 @@ export class UsersController {
     return {
       status: 200,
       // token: token,
-      id: passWd._id,
-      limit: await this.userLimit(userName._id)
+      id: userName._id,
+      limit: userName.limit
     };
   }
 }
