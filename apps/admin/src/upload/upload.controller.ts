@@ -24,7 +24,7 @@ export class UploadController {
 
     @Post(':id')
     @UseInterceptors(FileInterceptor('file'))
-    async upload(@UploadedFile('file') file, @Param('id') id: string) {
+    async upload(@Param('id') id: string, @UploadedFile('file') file) {
         let hasBucket = await this.DB().bucketExists(id);
 
         if (!hasBucket) {

@@ -1,15 +1,30 @@
 <template>
     <div>
         <h3>课程管理</h3>
-
         <el-button type="primary" size="small" @click="add('courseRef')">创建课程</el-button>
         <el-table :data="tableData.data" border stripe>
-            <el-table-column v-for="(field, name) in fields"
-                             :prop="name"
-                             :key="name"
-                             :label="field.label"
-            >
+            <el-table-column label="ID">
+                <template slot-scope="scope">
+                    {{scope.row._id}}
+                </template>
             </el-table-column>
+
+            <el-table-column label="课程名称">
+                <template slot-scope="scope">
+                    {{scope.row.name}}
+                </template>
+            </el-table-column>
+
+            <el-table-column label="课程封面图" width="82">
+                <template slot-scope="scope">
+                    <el-image
+                            style="width: 60px; height: 60px"
+                            :src="scope.row.cover"
+                            fit="scale-down">
+                    </el-image>
+                </template>
+            </el-table-column>
+
 
             <el-table-column label="操作">
                 <template slot-scope="{row}">
@@ -17,6 +32,7 @@
                     <el-button type="danger" size="small" @click="del(row)">删除</el-button>
                 </template>
             </el-table-column>
+
         </el-table>
 
         <div style="display: flex;justify-content: flex-end">
@@ -34,7 +50,7 @@
 
 
         <el-dialog :title="`${operate}课程`"
-                   :visible.sync="dialogFormVisible"
+                   :visible.sync="courseDialogShow"
                    :close-on-click-modal="false"
                    :close-on-press-escape="false">
             <el-form :model="courseForm" :rules="courseRules" ref="courseRef">
@@ -47,7 +63,7 @@
                             action="https://jsonplaceholder.typicode.com/posts/"
                             :show-file-list="false"
                             :http-request="uploadFile"
-                            :on-change="fileChange"
+                            :before-upload="beforeUpload"
                             :on-success="uploadSuccess"
                     >
                         <img v-if="imageUrl" :src="imageUrl" class="avatar">
@@ -56,7 +72,7 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button @click="courseDialogShow = false">取 消</el-button>
                 <el-button type="primary" @click="confirm('courseRef')">确 定</el-button>
             </div>
         </el-dialog>
@@ -86,11 +102,12 @@
     // dialog相关
     courseForm = {
       name: '',
+      cover: '',
     };
     operate = '';
-    dialogFormVisible = false;
+    courseDialogShow = false;
     imageUrl = '';
-    fileRaw = null;
+    fileRaw;
 
     courseRules = {
       name: [
@@ -121,11 +138,10 @@
     // dialog相关
     add(formName) {
       this.operate = '增加';
-
       this.$nextTick(() => {
         (this.$refs[formName] as Vue & { resetFields: () => boolean }).resetFields();
       });
-      this.dialogFormVisible = true;
+      this.courseDialogShow = true;
     }
 
     async del(row) {
@@ -141,17 +157,39 @@
 
     edit() {
       this.operate = '编辑';
-      this.dialogFormVisible = true;
+      this.courseDialogShow = true;
 
     }
 
-    fileChange(file) {
-      // this.imageUrl = URL.createObjectURL(file.raw);
-      this.fileRaw = file.raw;
+    async beforeUpload(file) {
+      return new Promise(((resolve, reject) => {
+        const isJPG = file.type === 'image/jpeg';
+        const isPNG = file.type === 'image/png';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isJPG && !isPNG) {
+          this.$message.error('上传头像图片只能是 JPG 或 PNG 格式!');
+          reject();
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+          reject();
+        }
+        let params = new FormData();
+        params.append('file', file);
+        this.fileRaw = params;
+        resolve();
+      }));
     }
 
-    uploadFile() {
-      console.log(this.fileRaw);
+    async uploadFile() {
+      let userInfo = JSON.parse(window.localStorage.getItem('userInfo') || '{}');
+      let userFile = `${userInfo.username}-${userInfo.id}`;
+      try {
+        let res = await this.$http.post(`/upload/${userFile}`, this.fileRaw);
+        this.courseForm.cover = res.data.url;
+      } catch (e) {
+        // console.log(e);
+      }
     }
 
     uploadSuccess(res, file) {
@@ -161,13 +199,15 @@
     async confirm(formName) {
       try {
         let result = await (this.$refs[formName] as Vue & { validate: () => boolean }).validate();
-        console.log(result);
+        console.log(this.courseForm);
+        if (result) {
+          let res = await this.$http.post(`courses/create`, this.courseForm);
+          console.log(res);
+        }
       } catch (e) {
-        // console.log(e);
+        console.log(e);
       }
     }
-
-
   }
 
 </script>
