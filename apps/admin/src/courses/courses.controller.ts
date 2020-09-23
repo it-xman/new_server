@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { CourseModel } from '@libs/db/models/course.model';
 import { Crud } from 'nestjs-mongoose-crud';
@@ -13,21 +13,27 @@ import { CourseDto } from '../Dto/course-dto';
 export class CoursesController {
   constructor(@InjectModel(CourseModel) private readonly model) {
   }
-  @Post('create')
-  async createCourse(@Body() courseDto: CourseDto) {
+
+  @Get('check/:id')
+  async checkCourse(@Param('id') id: string) {
     let course = await this.model.findOne({
-      name: courseDto.name,
+      name: id,
     });
     if (course) {
       return {
-        status: 422,
-        message: `课程已存在， 请重新输入`,
+        create: false,
       };
     }
+    return {
+      create: true,
+    };
+  }
+
+  @Post('create')
+  async createCourse(@Body() courseDto: CourseDto) {
     await this.model(courseDto).save();
     return {
-      status: 200,
-      message: '课程创建成功'
+      create: 'ok',
     };
   }
 }

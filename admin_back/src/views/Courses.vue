@@ -15,7 +15,7 @@
                 </template>
             </el-table-column>
 
-            <el-table-column label="课程封面图" width="82">
+            <el-table-column label="课程封面图" width="92">
                 <template slot-scope="scope">
                     <el-image
                             style="width: 60px; height: 60px"
@@ -60,11 +60,10 @@
                 <el-form-item label="课程封面">
                     <el-upload
                             class="avatar-uploader"
-                            action="https://jsonplaceholder.typicode.com/posts/"
+                            action=""
                             :show-file-list="false"
-                            :http-request="uploadFile"
+                            :http-request="overWriteUpload"
                             :before-upload="beforeUpload"
-                            :on-success="uploadSuccess"
                     >
                         <img v-if="imageUrl" :src="imageUrl" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -84,7 +83,8 @@
 
   @Component({})
   export default class Courses extends Vue {
-
+    // 上传文件type
+    fileType = '';
     // table相关
     tableData = {};
     fields = {
@@ -117,13 +117,8 @@
     };
 
     // table相关
-    created() {
+    mounted() {
       this.fetch();
-    }
-
-    async fetch() {
-      const response = await this.$http.get('courses');
-      this.tableData = response.data;
     }
 
     handleSizeChange(val) {
@@ -134,15 +129,86 @@
       console.log(`当前页: ${val}`);
     }
 
-
     // dialog相关
     add(formName) {
       this.operate = '增加';
+      this.imageUrl = '';
       this.$nextTick(() => {
         (this.$refs[formName] as Vue & { resetFields: () => boolean }).resetFields();
       });
       this.courseDialogShow = true;
     }
+
+    // 覆盖upload组件默认的上传行为
+    overWriteUpload() {
+    }
+
+    async beforeUpload(file) {
+      this.fileType = file.type;
+      return new Promise(((resolve, reject) => {
+        const isJPG = file.type === 'image/jpeg';
+        const isPNG = file.type === 'image/png';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isJPG && !isPNG) {
+          this.$message.error('上传头像图片只能是 JPG 或 PNG 格式!');
+          reject();
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+          reject();
+        }
+        this.imageUrl = URL.createObjectURL(file);
+        let params = new FormData();
+        params.append('file', file);
+        this.fileRaw = params;
+        resolve();
+      }));
+    }
+
+    async uploadFile() {
+      let userInfo = JSON.parse(window.localStorage.getItem('userInfo') || '{}');
+      let userFile = `${userInfo.username}-${userInfo.id}`;
+      try {
+        let res = await this.$http.post(`/upload/${userFile}`, this.fileRaw);
+        return res.data.url;
+      } catch (e) {
+        // console.log(e);
+      }
+    }
+
+    async confirm(formName) {
+      try {
+        let result = await (this.$refs[formName] as Vue & { validate: () => boolean }).validate();
+        if (result) {
+          // 先查询课名是否存在
+          let check = await this.$http.get(`courses/check/${this.courseForm.name}`);
+          if (!check.data.create) {
+            this.$message.error(`课程已存在，请重新输入`);
+            return;
+          }
+
+          if (this.fileType === '') {
+            await this.$http.post(`courses/create`, this.courseForm);
+            this.$message.success(`课程创建成功`);
+            await this.fetch();
+            this.courseDialogShow = false;
+            return;
+          } else if (this.fileType !== 'image/jpeg' && this.fileType !== 'image/png') {
+            this.$message.error(`请上传符合规范的jpg或png图片`);
+            return;
+          }
+
+          this.courseForm.cover = await this.uploadFile();
+          await this.$http.post(`courses/create`, this.courseForm);
+          await this.fetch();
+          this.courseDialogShow = false;
+          this.$message.success(`课程创建成功`);
+        }
+      } catch (e) {
+        // console.log(e);
+      }
+    }
+
 
     async del(row) {
       try {
@@ -161,53 +227,21 @@
 
     }
 
-    async beforeUpload(file) {
-      return new Promise(((resolve, reject) => {
-        const isJPG = file.type === 'image/jpeg';
-        const isPNG = file.type === 'image/png';
-        const isLt2M = file.size / 1024 / 1024 < 2;
-        if (!isJPG && !isPNG) {
-          this.$message.error('上传头像图片只能是 JPG 或 PNG 格式!');
-          reject();
-        }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
-          reject();
-        }
-        let params = new FormData();
-        params.append('file', file);
-        this.fileRaw = params;
-        resolve();
-      }));
+
+    async fetch() {
+      const response = await this.$http.get('courses', {
+        params: {
+          query: {
+            limit: 6,
+            sort: {
+              updatedAt: -1,
+            },
+          },
+        },
+      });
+      this.tableData = response.data;
     }
 
-    async uploadFile() {
-      let userInfo = JSON.parse(window.localStorage.getItem('userInfo') || '{}');
-      let userFile = `${userInfo.username}-${userInfo.id}`;
-      try {
-        let res = await this.$http.post(`/upload/${userFile}`, this.fileRaw);
-        this.courseForm.cover = res.data.url;
-      } catch (e) {
-        // console.log(e);
-      }
-    }
-
-    uploadSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-    }
-
-    async confirm(formName) {
-      try {
-        let result = await (this.$refs[formName] as Vue & { validate: () => boolean }).validate();
-        console.log(this.courseForm);
-        if (result) {
-          let res = await this.$http.post(`courses/create`, this.courseForm);
-          console.log(res);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    }
   }
 
 </script>
