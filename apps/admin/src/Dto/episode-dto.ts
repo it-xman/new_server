@@ -2,6 +2,12 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class EpisodeDto {
   @ApiProperty({
+    description: '课程名称',
+    example: '课程名称'
+  })
+  readonly course: string;
+
+  @ApiProperty({
     description: '课时名称',
     example: '第一小讲'
   })

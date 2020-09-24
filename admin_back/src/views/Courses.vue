@@ -86,18 +86,6 @@
     fileType = '';
     // table相关
     tableData = {};
-    fields = {
-      _id: {
-        label: 'ID',
-      },
-      name: {
-        label: '课程名称',
-      },
-      cover: {
-        label: '课程封面图',
-      },
-    };
-
     // dialog相关
     courseForm = {
       name: '',
@@ -193,10 +181,8 @@
     }
 
     async uploadFile() {
-      let userInfo = JSON.parse(window.localStorage.getItem('userInfo') || '{}');
-      let userFile = `${userInfo.username}-${userInfo.id}`;
       try {
-        let res = await this.$http.post(`/upload/${userFile}`, this.fileRaw);
+        let res = await this.$http.post(`/upload/cover`, this.fileRaw);
         return res.data.url;
       } catch (e) {
         // console.log(e);

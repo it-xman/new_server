@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { Crud } from 'nestjs-mongoose-crud';
 import { EpisodeModel } from '@libs/db/models/episode.model';
 import { ApiTags } from '@nestjs/swagger';
@@ -19,21 +19,27 @@ export class EpisodesController {
   ) {
   }
 
-  @Post('create')
-  async createCourse(@Body() episodeDto: EpisodeDto) {
+  @Get('check/:name')
+  async checkEpisodes(@Param('name') name: string) {
     let course = await this.model.findOne({
-      name: episodeDto.name,
+      name: name,
     });
     if (course) {
       return {
-        status: 422,
-        message: `课时已存在， 请重新输入`,
+        // 不能创建 false
+        create: false,
       };
     }
+    return {
+      create: true,
+    };
+  }
+
+  @Post('create')
+  async createEpisodes(@Body() episodeDto: EpisodeDto) {
     await this.model(episodeDto).save();
     return {
-      status: 200,
-      message: '课时创建成功'
+      create: 'ok',
     };
   }
 

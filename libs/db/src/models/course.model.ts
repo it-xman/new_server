@@ -1,6 +1,5 @@
-import {modelOptions, prop, Ref} from "@typegoose/typegoose";
+import {modelOptions, prop} from "@typegoose/typegoose";
 import {ApiProperty} from "@nestjs/swagger";
-import {EpisodeModel} from "@libs/db/models/episode.model";
 
 @modelOptions({
     schemaOptions: {
@@ -20,8 +19,4 @@ export class CourseModel {
     })
     @prop()
     cover: string
-
-    @prop({ref: 'EpisodeModel'})
-    episodes: Ref<EpisodeModel>[]
-
 }
