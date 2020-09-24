@@ -15,7 +15,7 @@
                 </template>
             </el-table-column>
 
-            <el-table-column label="课程封面图" width="92">
+            <el-table-column label="课程封面图" width="82">
                 <template slot-scope="scope">
                     <el-image
                             style="width: 60px; height: 60px"
@@ -133,6 +133,8 @@
     add(formName) {
       this.operate = '增加';
       this.imageUrl = '';
+      this.fileType = '';
+      this.courseForm.cover = '';
       this.$nextTick(() => {
         (this.$refs[formName] as Vue & { resetFields: () => boolean }).resetFields();
       });
@@ -189,20 +191,18 @@
 
           if (this.fileType === '') {
             await this.$http.post(`courses/create`, this.courseForm);
-            this.$message.success(`课程创建成功`);
             await this.fetch();
             this.courseDialogShow = false;
-            return;
+            return this.$message.success(`课程创建成功`);
           } else if (this.fileType !== 'image/jpeg' && this.fileType !== 'image/png') {
-            this.$message.error(`请上传符合规范的jpg或png图片`);
-            return;
+            return this.$message.error(`请上传符合规范的jpg或png图片`);
+          } else {
+            this.courseForm.cover = await this.uploadFile();
+            await this.$http.post(`courses/create`, this.courseForm);
+            await this.fetch();
+            this.courseDialogShow = false;
+            this.$message.success(`课程创建成功`);
           }
-
-          this.courseForm.cover = await this.uploadFile();
-          await this.$http.post(`courses/create`, this.courseForm);
-          await this.fetch();
-          this.courseDialogShow = false;
-          this.$message.success(`课程创建成功`);
         }
       } catch (e) {
         // console.log(e);
@@ -269,8 +269,8 @@
     }
 
     .avatar {
-        width: 178px;
-        height: 178px;
+        width: 180px;
+        /*height: 178px;*/
         display: block;
     }
 </style>
