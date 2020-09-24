@@ -126,7 +126,7 @@
         updatedAt: -1,
       },
     };
-    
+
     // table相关
     mounted() {
       this.fetch();

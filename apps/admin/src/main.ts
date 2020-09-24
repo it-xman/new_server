@@ -3,7 +3,17 @@ import {AppModule} from './app.module';
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
 
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule);
+
+    // https设置
+    // const httpsOptions = {
+    //     key: fs.readFileSync('/mnt/config/certs/private.key'),
+    //     cert: fs.readFileSync('/mnt/config/certs/public.crt'),
+    // };
+    const app = await NestFactory.create(AppModule, {
+        // httpsOptions
+    });
+
+
     app.enableCors();
     const options = new DocumentBuilder()
         .setTitle('Admin后台管理API')
