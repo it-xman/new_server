@@ -70,4 +70,7 @@
     .main-menu {
         height: 100vh;
     }
+    .el-main {
+        padding: 0;
+    }
 </style>

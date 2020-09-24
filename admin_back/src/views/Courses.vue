@@ -103,9 +103,9 @@
       ],
     };
 
-    pageSize = 6;
+    pageSize = 10;
     totalSize = 1;
-    pageSizes = [6, 12, 18, 24];
+    pageSizes = [10, 20, 50, 100];
 
     query = {
       limit: 6,
@@ -212,7 +212,7 @@
             this.operate === '增加' ? await this.$http.post(url, this.courseForm) : await this.$http.put(url, this.courseForm);
             await this.fetch();
             this.courseDialogShow = false;
-            return this.operate === '增加' ? this.$message.success(`课程创建成功`) : this.$message.success(`课程编辑成功`);
+            this.operate === '增加' ? this.$message.success(`课程创建成功`) : this.$message.success(`课程编辑成功`);
           }
         }
       } catch (e) {

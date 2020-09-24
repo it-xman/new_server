@@ -19,7 +19,7 @@
                 <template slot-scope="scope">
                     <el-image
                             style="width: 60px; height: 60px"
-                            :src="scope.row.cover"
+                            :src="scope.row.file"
                             fit="scale-down">
                     </el-image>
                 </template>
@@ -52,7 +52,7 @@
                    :visible.sync="courseDialogShow"
                    :close-on-click-modal="false"
                    :close-on-press-escape="false">
-            <el-form :model="episodesForm" :rules="episodeRules" ref="courseRef">
+            <el-form :model="episodesForm" :rules="episodeRules" ref="courseRef" v-loading="submitting">
                 <el-form-item label="课程名称" prop="course">
                     <el-select v-model="episodesForm.course" placeholder="请选择">
                         <el-option
@@ -83,8 +83,8 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="courseDialogShow = false">取 消</el-button>
-                <el-button type="primary" @click="confirm('courseRef')">确 定</el-button>
+                <el-button @click="courseDialogShow = false" :disabled="submitting">取 消</el-button>
+                <el-button type="primary" @click="confirm('courseRef')" :disabled="submitting">确 定</el-button>
             </div>
         </el-dialog>
     </div>
@@ -95,6 +95,7 @@
 
   @Component({})
   export default class Courses extends Vue {
+    submitting = false;
     // 上传文件type
     fileType = '';
     // table相关
@@ -123,9 +124,9 @@
       ],
     };
 
-    pageSize = 6;
+    pageSize = 10;
     totalSize = 1;
-    pageSizes = [6, 12, 18, 24];
+    pageSizes = [10, 20, 50, 100];
 
     query = {
       limit: 6,
@@ -172,7 +173,7 @@
       let res = await this.$http.get(`episodes/${raw._id}`);
       this.episodesForm.name = res.data.name;
       this.episodesForm.course = res.data.course;
-      this.imageUrl = res.data.cover;
+      this.imageUrl = res.data.file;
       this.editId = raw._id;
     }
 
@@ -212,22 +213,18 @@
               return this.$message.error(`课时已存在，请重新输入`);
             }
           }
-          let url = this.operate === '增加' ? `episodes/create` : `episodes/${this.editId}`;
-          if (this.fileType === '') {
-            this.operate === '增加' ? await this.$http.post(url, this.episodesForm) : await this.$http.put(url, this.episodesForm);
-            await this.fetch();
-            this.courseDialogShow = false;
-            return this.operate === '增加' ? this.$message.success(`课时创建成功`) : this.$message.success(`课时编辑成功`);
-          }
+          this.submitting = true;
           this.episodesForm.file = await this.uploadFile();
+          let url = this.operate === '增加' ? `episodes/create` : `episodes/${this.editId}`;
           this.operate === '增加' ? await this.$http.post(url, this.episodesForm) : await this.$http.put(url, this.episodesForm);
           await this.fetch();
           this.courseDialogShow = false;
-          return this.operate === '增加' ? this.$message.success(`课时创建成功`) : this.$message.success(`课时编辑成功`);
-
+          this.operate === '增加' ? this.$message.success(`课时创建成功`) : this.$message.success(`课时编辑成功`);
         }
       } catch (e) {
         // console.log(e);
+      } finally {
+        this.submitting = false;
       }
     }
 

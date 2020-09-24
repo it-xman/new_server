@@ -1,6 +1,6 @@
 <template>
-    <div>
-        欢迎 {{user}} 使用后台管理系统
+    <div style="display: flex; justify-content: center;" class="welcome-bgc">
+        <h1 style="font-size: 36px;margin-top: 220px;color: #cccccc">欢迎 {{user}} 使用后台管理系统</h1>
     </div>
 </template>
 
@@ -19,5 +19,12 @@
 
 </script>
 
-<style>
+<style lang="scss" scoped>
+    .welcome-bgc {
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        background: url("../assets/login_bg.jpg") no-repeat;
+        background-size: cover;
+    }
 </style>
