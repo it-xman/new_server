@@ -77,7 +77,7 @@
                             :http-request="overWriteUpload"
                             :before-upload="beforeUpload"
                     >
-                        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                        <img v-if="imageUrl" :src="imageUrl" class="avatar" alt="">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                 </el-form-item>

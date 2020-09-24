@@ -64,7 +64,7 @@
                             :http-request="overWriteUpload"
                             :before-upload="beforeUpload"
                     >
-                        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                        <img v-if="imageUrl" :src="imageUrl" class="avatar" alt="">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                 </el-form-item>
@@ -167,17 +167,17 @@
     }
 
     async beforeUpload(file) {
-      this.fileType = file.type;
+      this.fileType = file.name.split('.').pop()
       return new Promise(((resolve, reject) => {
         const isJPG = file.type === 'image/jpeg';
         const isPNG = file.type === 'image/png';
         const isLt2M = file.size / 1024 / 1024 < 2;
         if (!isJPG && !isPNG) {
-          this.$message.error('上传头像图片只能是 JPG 或 PNG 格式!');
+          this.$message.error('上传封面图片只能是 JPG 或 PNG 格式!');
           reject();
         }
         if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
+          this.$message.error('上传封面图片大小不能超过 2MB!');
           reject();
         }
         this.imageUrl = URL.createObjectURL(file);
@@ -213,7 +213,7 @@
             await this.fetch();
             this.courseDialogShow = false;
             return this.operate === '增加' ? this.$message.success(`课程创建成功`) : this.$message.success(`课程编辑成功`);
-          } else if (this.fileType !== 'image/jpeg' && this.fileType !== 'image/png') {
+          } else if (this.fileType !== 'jpg' && this.fileType !== 'png') {
             return this.$message.error(`请上传符合规范的jpg或png图片`);
           } else {
             this.courseForm.cover = await this.uploadFile();

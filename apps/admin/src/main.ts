@@ -3,7 +3,7 @@ import {AppModule} from './app.module';
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
 import * as compression from 'compression';
 import * as helmet from 'helmet';
-import * as csurf from 'csurf';
+// import * as csurf from 'csurf';
 async function bootstrap() {
 
     // https设置
@@ -17,7 +17,7 @@ async function bootstrap() {
     app.use(compression());
     app.use(helmet());
     app.enableCors();
-    app.use(csurf());
+    // app.use(csurf());
     const options = new DocumentBuilder()
         .setTitle('Admin后台管理API')
         .setVersion('1.0')
