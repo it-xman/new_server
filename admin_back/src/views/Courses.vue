@@ -194,14 +194,11 @@
       try {
         let result = await (this.$refs[formName] as Vue & { validate: () => boolean }).validate();
         if (result) {
-          if (this.operate === '增加') {
-            let check = await this.$http.get(`courses/check/${this.courseForm.name}`);
-            if (!check.data.create) {
-              return this.$message.error(`课程已存在，请重新输入`);
-            }
+          let check = await this.$http.get(`courses/check/${this.courseForm.name}`);
+          if (!check.data.create) {
+            return this.$message.error(`课程已存在，请重新输入`);
           }
           let url = this.operate === '增加' ? `courses/create` : `courses/${this.editId}`;
-
           if (this.fileType === '') {
             this.operate === '增加' ? await this.$http.post(url, this.courseForm) : await this.$http.put(url, this.courseForm);
             await this.fetch();
