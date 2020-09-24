@@ -15,7 +15,7 @@
                 </template>
             </el-table-column>
 
-            <el-table-column label="课程封面图" width="82">
+            <el-table-column label="封面图" width="82">
                 <template slot-scope="scope">
                     <el-image
                             style="width: 60px; height: 60px"
@@ -25,8 +25,7 @@
                 </template>
             </el-table-column>
 
-
-            <el-table-column label="操作">
+            <el-table-column label="操作" width="145">
                 <template slot-scope="{row}">
                     <el-button type="primary" size="small" @click="edit(row)">编辑</el-button>
                     <el-button type="danger" size="small" @click="del(row)">删除</el-button>
@@ -37,14 +36,14 @@
 
         <div style="display: flex;justify-content: flex-end">
             <el-pagination
+                    :small="true"
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
-                    :current-page="1"
-                    :page-sizes="[100, 200, 300, 400]"
-                    :page-size="100"
+                    :page-sizes="pageSizes"
+                    :page-size="pageSize"
                     layout="total, sizes, prev, pager, next, jumper"
-                    :hide-on-single-page="true"
-                    :total="400">
+                    :hide-on-single-page="false"
+                    :total="totalSize">
             </el-pagination>
         </div>
 
@@ -116,17 +115,31 @@
       ],
     };
 
+    pageSize = 6;
+    totalSize = 1;
+    pageSizes = [6, 12, 18, 24];
+
+    query = {
+      limit: 6,
+      page: 1,
+      sort: {
+        updatedAt: -1,
+      },
+    };
+    
     // table相关
     mounted() {
       this.fetch();
     }
 
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+    async handleSizeChange(val) {
+      this.query.limit = val;
+      await this.fetch();
     }
 
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+    async handleCurrentChange(val) {
+      this.query.page = val;
+      await this.fetch();
     }
 
     // dialog相关
@@ -195,8 +208,10 @@
         let result = await (this.$refs[formName] as Vue & { validate: () => boolean }).validate();
         if (result) {
           let check = await this.$http.get(`courses/check/${this.courseForm.name}`);
-          if (!check.data.create) {
-            return this.$message.error(`课程已存在，请重新输入`);
+          if (this.operate === '增加') {
+            if (!check.data.create) {
+              return this.$message.error(`课程已存在，请重新输入`);
+            }
           }
           let url = this.operate === '增加' ? `courses/create` : `courses/${this.editId}`;
           if (this.fileType === '') {
@@ -230,21 +245,16 @@
       await this.fetch();
     }
 
-
     async fetch() {
       const response = await this.$http.get('courses', {
-        params: {
-          query: {
-            limit: 6,
-            sort: {
-              updatedAt: -1,
-            },
+          params: {
+            query: this.query,
           },
         },
-      });
+      );
+      this.totalSize = response.data.total;
       this.tableData = response.data;
     }
-
   }
 
 </script>
