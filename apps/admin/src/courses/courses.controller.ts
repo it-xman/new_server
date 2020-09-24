@@ -14,13 +14,14 @@ export class CoursesController {
   constructor(@InjectModel(CourseModel) private readonly model) {
   }
 
-  @Get('check/:id')
-  async checkCourse(@Param('id') id: string) {
+  @Get('check/:name')
+  async checkCourse(@Param('name') name: string) {
     let course = await this.model.findOne({
-      name: id,
+      name: name,
     });
     if (course) {
       return {
+        // 不能创建 false
         create: false,
       };
     }

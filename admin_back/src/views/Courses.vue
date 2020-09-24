@@ -108,7 +108,7 @@
     courseDialogShow = false;
     imageUrl = '';
     fileRaw;
-
+    editId = '';
     courseRules = {
       name: [
         { required: true, message: '请输入课程名称', trigger: 'blur' },
@@ -139,6 +139,18 @@
         (this.$refs[formName] as Vue & { resetFields: () => boolean }).resetFields();
       });
       this.courseDialogShow = true;
+    }
+
+    async edit(raw) {
+      this.operate = '编辑';
+      this.$nextTick(() => {
+        (this.$refs['courseRef'] as Vue & { clearValidate: () => boolean }).clearValidate();
+      });
+      this.courseDialogShow = true;
+      let res = await this.$http.get(`courses/${raw._id}`);
+      this.courseForm.name = res.data.name;
+      this.imageUrl = res.data.cover;
+      this.editId = raw._id;
     }
 
     // 覆盖upload组件默认的上传行为
@@ -182,33 +194,33 @@
       try {
         let result = await (this.$refs[formName] as Vue & { validate: () => boolean }).validate();
         if (result) {
-          // 先查询课名是否存在
-          let check = await this.$http.get(`courses/check/${this.courseForm.name}`);
-          if (!check.data.create) {
-            this.$message.error(`课程已存在，请重新输入`);
-            return;
+          if (this.operate === '增加') {
+            let check = await this.$http.get(`courses/check/${this.courseForm.name}`);
+            if (!check.data.create) {
+              return this.$message.error(`课程已存在，请重新输入`);
+            }
           }
+          let url = this.operate === '增加' ? `courses/create` : `courses/${this.editId}`;
 
           if (this.fileType === '') {
-            await this.$http.post(`courses/create`, this.courseForm);
+            this.operate === '增加' ? await this.$http.post(url, this.courseForm) : await this.$http.put(url, this.courseForm);
             await this.fetch();
             this.courseDialogShow = false;
-            return this.$message.success(`课程创建成功`);
+            return this.operate === '增加' ? this.$message.success(`课程创建成功`) : this.$message.success(`课程编辑成功`);
           } else if (this.fileType !== 'image/jpeg' && this.fileType !== 'image/png') {
             return this.$message.error(`请上传符合规范的jpg或png图片`);
           } else {
             this.courseForm.cover = await this.uploadFile();
-            await this.$http.post(`courses/create`, this.courseForm);
+            this.operate === '增加' ? await this.$http.post(url, this.courseForm) : await this.$http.put(url, this.courseForm);
             await this.fetch();
             this.courseDialogShow = false;
-            this.$message.success(`课程创建成功`);
+            return this.operate === '增加' ? this.$message.success(`课程创建成功`) : this.$message.success(`课程编辑成功`);
           }
         }
       } catch (e) {
         // console.log(e);
       }
     }
-
 
     async del(row) {
       try {
@@ -219,12 +231,6 @@
       await this.$http.delete(`/courses/${row._id}`);
       this.$message.success('删除成功');
       await this.fetch();
-    }
-
-    edit() {
-      this.operate = '编辑';
-      this.courseDialogShow = true;
-
     }
 
 
@@ -270,7 +276,7 @@
 
     .avatar {
         width: 180px;
-        /*height: 178px;*/
+        height: 180px;
         display: block;
     }
 </style>
