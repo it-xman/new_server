@@ -2,7 +2,7 @@
     <div>
         <h3>课时管理</h3>
         <el-button type="primary" size="small" @click="add('courseRef')">创建课时</el-button>
-        <el-table :data="tableData.data" border stripe>
+        <el-table :data="tableData.data" border stripe v-loading="tableLoading">
             <el-table-column label="课程名称">
                 <template slot-scope="scope">
                     {{scope.row.course}}
@@ -95,6 +95,7 @@
 
   @Component({})
   export default class Courses extends Vue {
+    tableLoading = true;
     submitting = false;
     // 上传文件type
     fileType = '';
@@ -138,8 +139,15 @@
 
     // table相关
     async mounted() {
-      await this.fetch();
-      await this.getCourses();
+      try {
+        await this.fetch();
+        await this.getCourses();
+      } catch (e) {
+        console.log(e);
+      } finally {
+        this.tableLoading = false;
+      }
+
     }
 
     async handleSizeChange(val) {

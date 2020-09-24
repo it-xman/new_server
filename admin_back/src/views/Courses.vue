@@ -2,12 +2,12 @@
     <div>
         <h3>课程管理</h3>
         <el-button type="primary" size="small" @click="add('courseRef')">创建课程</el-button>
-        <el-table :data="tableData.data" border stripe>
-            <el-table-column label="ID">
-                <template slot-scope="scope">
-                    {{scope.row._id}}
-                </template>
-            </el-table-column>
+        <el-table :data="tableData.data" border stripe v-loading="tableLoading">
+            <!--            <el-table-column label="ID">-->
+            <!--                <template slot-scope="scope">-->
+            <!--                    {{scope.row._id}}-->
+            <!--                </template>-->
+            <!--            </el-table-column>-->
 
             <el-table-column label="课程名称">
                 <template slot-scope="scope">
@@ -15,7 +15,7 @@
                 </template>
             </el-table-column>
 
-            <el-table-column label="封面图" width="82">
+            <el-table-column label="封面图">
                 <template slot-scope="scope">
                     <el-image
                             style="width: 60px; height: 60px"
@@ -82,6 +82,8 @@
 
   @Component({})
   export default class Courses extends Vue {
+    tableLoading = true;
+
     // 上传文件type
     fileType = '';
     // table相关
@@ -116,8 +118,14 @@
     };
 
     // table相关
-    mounted() {
-      this.fetch();
+    async mounted() {
+      try {
+        await this.fetch();
+      } catch (e) {
+        console.log(e);
+      } finally {
+        this.tableLoading = false;
+      }
     }
 
     async handleSizeChange(val) {
