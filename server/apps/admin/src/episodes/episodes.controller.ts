@@ -59,6 +59,7 @@ export class EpisodesController {
       return {
         name: v.name,
         file: v.file,
+        type: v.type
       };
     });
   }

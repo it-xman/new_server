@@ -3,25 +3,31 @@
         <h3>课时管理</h3>
         <el-button type="primary" size="small" @click="add('courseRef')">创建课时</el-button>
         <el-table :data="tableData.data" border stripe v-loading="tableLoading">
-            <el-table-column label="课程名称">
-                <template slot-scope="scope">
-                    {{scope.row.course}}
-                </template>
-            </el-table-column>
-
             <el-table-column label="课时名称">
                 <template slot-scope="scope">
                     {{scope.row.name}}
                 </template>
             </el-table-column>
 
-            <el-table-column label="课程文件预览">
+            <el-table-column label="课程名称">
+                <template slot-scope="scope">
+                    {{scope.row.course}}
+                </template>
+            </el-table-column>
+
+            <el-table-column label="课时文件预览">
                 <template slot-scope="scope">
                     <el-image
                             style="width: 60px; height: 60px"
                             :src="scope.row.file"
                             fit="scale-down">
                     </el-image>
+                </template>
+            </el-table-column>
+
+            <el-table-column label="文件类型">
+                <template slot-scope="scope">
+                    <span>{{scope.row.type}}</span>
                 </template>
             </el-table-column>
 
@@ -97,8 +103,6 @@
   export default class Courses extends Vue {
     tableLoading = true;
     submitting = false;
-    // 上传文件type
-    fileType = '';
     // table相关
     tableData = {};
     // dialog相关
@@ -106,6 +110,7 @@
       course: '',
       name: '',
       file: '',
+      type: ''
     };
     courses = [];
     operate = '';
@@ -164,7 +169,6 @@
     add(formName) {
       this.operate = '增加';
       this.imageUrl = '';
-      this.fileType = '';
       this.episodesForm.file = '';
       this.$nextTick(() => {
         (this.$refs[formName] as Vue & { resetFields: () => boolean }).resetFields();
@@ -190,7 +194,7 @@
     }
 
     async beforeUpload(file) {
-      this.fileType = file.type;
+      this.episodesForm.type = file.name.split('.').pop()
       return new Promise(((resolve) => {
         this.imageUrl = URL.createObjectURL(file);
         let params = new FormData();
@@ -201,10 +205,10 @@
     }
 
     async uploadFile() {
-      let userInfo = JSON.parse(window.localStorage.getItem('userInfo') || '{}');
-      let userFile = `${userInfo.username}-file`;
+      // let userInfo = JSON.parse(window.localStorage.getItem('userInfo') || '{}');
+      // let userFile = `${userInfo.username}-file`;
       try {
-        let res = await this.$http.post(`/upload/${userFile}`, this.fileRaw);
+        let res = await this.$http.post(`/upload/courses`, this.fileRaw);
         return res.data.url;
       } catch (e) {
         // console.log(e);

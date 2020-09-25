@@ -18,4 +18,10 @@ export class EpisodeDto {
     example: 'fileUrl'
   })
   readonly file: string;
+
+  @ApiProperty({
+    description: '课程文件类型',
+    example: 'mp4/mp3'
+  })
+  readonly type: string;
 }

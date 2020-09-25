@@ -32,6 +32,7 @@ export class CoursesController {
       return {
         name: v.name,
         file: v.file,
+        type: v.type
       };
     });
   }
