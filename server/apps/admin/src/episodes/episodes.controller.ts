@@ -7,7 +7,7 @@ import { CourseModel } from '@libs/db/models/course.model';
 import { EpisodeDto } from '../Dto/episode-dto';
 
 @Crud({
-  model: EpisodeModel
+  model: EpisodeModel,
 })
 
 @Controller('episodes')
@@ -15,7 +15,7 @@ import { EpisodeDto } from '../Dto/episode-dto';
 export class EpisodesController {
   constructor(
     @InjectModel(EpisodeModel) private readonly model,
-    @InjectModel(CourseModel) private readonly CourseModel
+    @InjectModel(CourseModel) private readonly CourseModel,
   ) {
   }
 
@@ -48,8 +48,19 @@ export class EpisodesController {
     return (await this.CourseModel.find().exec()).map((v) => {
       return {
         name: v.name,
-        id: v._id
-      }
-    })
+        id: v._id,
+      };
+    });
   }
+
+  @Get('showcourse/:coursename')
+  async show(@Param('coursename') coursename: string) {
+    return (await this.model.find({ course: coursename }).exec()).map((v) => {
+      return {
+        name: v.name,
+        file: v.file,
+      };
+    });
+  }
+
 }
