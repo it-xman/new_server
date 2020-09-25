@@ -11,7 +11,7 @@ export class EpisodeModel {
         description: '课时名称'
     })
     @prop()
-    name: string | number
+    name: string
 
     @ApiProperty({
         description: '上传文件'
@@ -23,6 +23,6 @@ export class EpisodeModel {
         description: '课程名称'
     })
     @prop()
-    course: string | number
+    course: string
 
 }

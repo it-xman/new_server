@@ -8,7 +8,7 @@ import { modelOptions, prop } from '@typegoose/typegoose';
 
 export class UserModel {
   @prop()
-  username: string | number;
+  username: string;
 
   @prop()
   password: string;
@@ -17,6 +17,6 @@ export class UserModel {
   limit: string;
 
   @prop()
-  nickname: string | number;
+  nickname: string;
 
 }
