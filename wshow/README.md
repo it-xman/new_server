@@ -1,19 +1,7 @@
 # wshow
 
-## Project setup
-```
-yarn install
-```
+### 使用sass
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+- 安装`yarn add sass-loader node-sass`
+- 重启项目 即可在style标签中使用`<style lang="scss" scoped>`
 
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
