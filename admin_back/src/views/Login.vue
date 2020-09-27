@@ -25,8 +25,8 @@
   @Component({})
   export default class Login extends Vue {
     userForm = {
-      username: 'username',
-      password: 'password',
+      username: '',
+      password: '',
     };
 
     loginRules = {
