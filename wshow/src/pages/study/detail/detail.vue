@@ -3,6 +3,21 @@
         <div class="detail-name">
             《{{courseName}}》
         </div>
+
+        <uni-collapse v-for="item in files" :key="item.file">
+            <uni-collapse-item :title="item.name" :open="false">
+                <div v-if="item.file===undefined">暂无课程文件</div>
+                <video :src="item.file"
+                       controls>
+                </video>
+
+<!--                <uni-list>-->
+<!--                    <uni-list-item>-->
+<!--                        {{item.file}}-->
+<!--                    </uni-list-item>-->
+<!--                </uni-list>-->
+            </uni-collapse-item>
+        </uni-collapse>
     </div>
 </template>
 
@@ -13,6 +28,7 @@
   @Component({})
   export default class CourseDetail extends Vue {
     courseName: string = '';
+    files: [] = [];
 
     async onLoad(option) {
       if (option.hasOwnProperty('course')) {
@@ -27,7 +43,7 @@
     async getEpisodes(coursename) {
       try {
         let [, file]: any = await API.get(`courses/episodes/${coursename}`);
-        console.log(file);
+        this.files = file.data;
       } catch (e) {
         console.log(e);
       } finally {
