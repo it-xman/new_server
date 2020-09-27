@@ -21,13 +21,14 @@
             >
                 <span>查看课程 《{{item.name}}》 详情</span>
             </uni-card>
-
-            <uni-pagination
-                    :total="total"
-                    @change="changePage"
-                    :pageSize="pageSize"
-                    :current="current">
-            </uni-pagination>
+            <div class="page-fix">
+                <uni-pagination
+                        :total="total"
+                        @change="changePage"
+                        :pageSize="pageSize"
+                        :current="current">
+                </uni-pagination>
+            </div>
         </div>
     </div>
 </template>
@@ -104,5 +105,12 @@
 
 </script>
 
-<style>
+<style lang="scss" scoped>
+    .page-fix {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        bottom: 0;
+    }
+
 </style>
