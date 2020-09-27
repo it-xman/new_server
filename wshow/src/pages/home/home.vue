@@ -29,10 +29,10 @@
 
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator';
-  import uniSwiperDot from '@dcloudio/uni-ui/lib/uni-swiper-dot/uni-swiper-dot.vue';
+  // import uniSwiperDot from '@dcloudio/uni-ui/lib/uni-swiper-dot/uni-swiper-dot.vue';
   @Component({
     components: {
-      uniSwiperDot,
+      // uniSwiperDot,
     },
   })
 

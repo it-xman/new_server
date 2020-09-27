@@ -3,7 +3,6 @@ import { CourseModel } from '@libs/db/models/course.model';
 import { InjectModel } from 'nestjs-typegoose';
 import { ApiTags } from '@nestjs/swagger';
 import { EpisodeModel } from '@libs/db/models/episode.model';
-import { toArray } from 'rxjs/operators';
 
 
 @Controller('courses')
@@ -45,7 +44,7 @@ export class CoursesController {
   }
 
   @ApiTags('课时')
-  @Get(':coursename')
+  @Get('episodes/:coursename')
   async show(@Param('coursename') coursename: string) {
     return (await this.episodeModel.find({ course: coursename }).exec()).map((v) => {
       return {

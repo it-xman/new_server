@@ -36,13 +36,13 @@
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator';
   import { API } from '@/framework/api';
-  import uniCard from '@dcloudio/uni-ui/lib/uni-card/uni-card.vue';
-  import uniPagination from '@dcloudio/uni-ui/lib/uni-pagination/uni-pagination.vue';
+  // import uniCard from '@dcloudio/uni-ui/lib/uni-card/uni-card.vue';
+  // import uniPagination from '@dcloudio/uni-ui/lib/uni-pagination/uni-pagination.vue';
 
   @Component({
     components: {
-      uniCard,
-      uniPagination,
+      // uniCard,
+      // uniPagination,
     },
   })
   export default class StudyCenter extends Vue {
@@ -54,7 +54,7 @@
       limit: 5,
       page: 1,
       sort: {
-        createdAt: -1,
+        updatedAt: -1,
       },
     };
 

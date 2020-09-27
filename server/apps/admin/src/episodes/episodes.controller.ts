@@ -45,7 +45,7 @@ export class EpisodesController {
 
   @Get('course')
   async get() {
-    return (await this.CourseModel.find().exec()).map((v) => {
+    return (await this.CourseModel.find().sort({ updatedAt: -1 }).exec()).map((v) => {
       return {
         name: v.name,
         id: v._id,
@@ -59,7 +59,7 @@ export class EpisodesController {
       return {
         name: v.name,
         file: v.file,
-        type: v.type
+        type: v.type,
       };
     });
   }
