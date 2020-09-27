@@ -167,7 +167,7 @@
     }
 
     async beforeUpload(file) {
-      this.fileType = file.name.split('.').pop()
+      this.fileType = file.name.split('.').pop();
       return new Promise(((resolve, reject) => {
         const isJPG = file.type === 'image/jpeg';
         const isPNG = file.type === 'image/png';
@@ -202,10 +202,8 @@
         let result = await (this.$refs[formName] as Vue & { validate: () => boolean }).validate();
         if (result) {
           let check = await this.$http.get(`courses/check/${this.courseForm.name}`);
-          if (this.operate === '增加') {
-            if (!check.data.create) {
-              return this.$message.error(`课程已存在，请重新输入`);
-            }
+          if (this.operate === '增加' && !check.data.create) {
+            return this.$message.error(`课程已存在，请重新输入`);
           }
           let url = this.operate === '增加' ? `courses/create` : `courses/${this.editId}`;
           if (this.fileType === '') {

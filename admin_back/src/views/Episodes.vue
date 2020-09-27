@@ -110,7 +110,7 @@
       course: '',
       name: '',
       file: '',
-      type: ''
+      type: '',
     };
     courses = [];
     operate = '';
@@ -194,7 +194,7 @@
     }
 
     async beforeUpload(file) {
-      this.episodesForm.type = file.name.split('.').pop()
+      this.episodesForm.type = file.name.split('.').pop();
       return new Promise(((resolve) => {
         this.imageUrl = URL.createObjectURL(file);
         let params = new FormData();
@@ -220,13 +220,13 @@
         let result = await (this.$refs[formName] as Vue & { validate: () => boolean }).validate();
         if (result) {
           let check = await this.$http.get(`episodes/check/${this.episodesForm.name}`);
-          if (this.operate === '增加') {
-            if (!check.data.create) {
-              return this.$message.error(`课时已存在，请重新输入`);
-            }
+          if (this.operate === '增加' && !check.data.create) {
+            return this.$message.error(`课时已存在，请重新输入`);
           }
           this.submitting = true;
-          this.episodesForm.file = await this.uploadFile();
+          if (this.episodesForm.type !== '') {
+            this.episodesForm.file = await this.uploadFile();
+          }
           let url = this.operate === '增加' ? `episodes/create` : `episodes/${this.editId}`;
           this.operate === '增加' ? await this.$http.post(url, this.episodesForm) : await this.$http.put(url, this.episodesForm);
           await this.fetch();
