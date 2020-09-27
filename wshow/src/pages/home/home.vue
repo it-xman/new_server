@@ -2,12 +2,12 @@
     <view class="home">
         <h1 class="home_text">小鹰学习社</h1>
         <h3 class="home_text">
-            相关文案描述
+
         </h3>
         <div class="home_text">
-            1.__________
-            <hr>
-            2.__________
+            每天学习一点点
+<!--            <hr>-->
+<!--            口语发音-->
         </div>
         <uni-swiper-dot class="home-swiper-dot"
                         :info="banner"
@@ -24,15 +24,17 @@
                 </swiper-item>
             </swiper>
         </uni-swiper-dot>
+
+        <div class="bottom">
+            坚持，是努力把一件事做到极致
+        </div>
     </view>
 </template>
 
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator';
-  // import uniSwiperDot from '@dcloudio/uni-ui/lib/uni-swiper-dot/uni-swiper-dot.vue';
   @Component({
     components: {
-      // uniSwiperDot,
     },
   })
 
@@ -40,16 +42,16 @@
 
     banner = [
       {
-        src: '/static/img/learn.jpg',
+        src: '/static/img/banner0.jpg',
       },
       {
-        src: '/static/img/learn.jpg',
+        src: '/static/img/banner1.jpg',
       },
       {
-        src: '/static/img/learn.jpg',
+        src: '/static/img/banner2.jpg',
       },
       {
-        src: '/static/img/learn.jpg',
+        src: '/static/img/banner3.jpg',
       }
     ];
     current = 0;
@@ -74,6 +76,11 @@
         .home_text {
             margin-top: 50rpx;
             font-size: 24px;
+            &:nth-child(1) {
+                font-size: 38px;
+                color: #3a8ee6;
+            }
+            color: #3F536E;
         }
         .home-swiper-dot {
             width: 100%;
@@ -85,6 +92,10 @@
                     width: 100%;
                 }
             }
+        }
+        .bottom {
+            margin: 100rpx;
+            color: #3a8ee6;
         }
     }
 </style>

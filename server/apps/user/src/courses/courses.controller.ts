@@ -20,7 +20,8 @@ export class CoursesController {
     let total = await this.courseModel.find().countDocuments();
     if (total === 0) {
       return {
-        msg: '无数据',
+        name: '',
+        total: 0,
       };
     }
     let data = (await this.courseModel.find()
@@ -46,7 +47,7 @@ export class CoursesController {
   @ApiTags('课时')
   @Get('episodes/:coursename')
   async show(@Param('coursename') coursename: string) {
-    return (await this.episodeModel.find({ course: coursename }).exec()).map((v) => {
+    return (await this.episodeModel.find({ course: coursename }).sort({ createdAt: -1 }).exec()).map((v) => {
       return {
         name: v.name,
         file: v.file,

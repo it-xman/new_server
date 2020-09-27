@@ -64,7 +64,7 @@
       {
         "name": "study",
         "path": "pages/study/detail/detail",
-        "query": "course=sdfs"
+        "query": "course=test"
       }
     ]
   },

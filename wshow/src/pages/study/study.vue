@@ -10,7 +10,7 @@
 
         <div v-if="courseData.length !== 0">
             <uni-card
-                    @click="detail(item.name)"
+                    @click="detail(item)"
                     :key="index"
                     v-for="(item, index) in courseData"
                     :title="`《${item.name}》`"
@@ -96,9 +96,9 @@
       await this.fetch();
     }
 
-    async detail(courseName) {
+    async detail(course) {
       uni.navigateTo({
-        url: `/pages/study/detail/detail?course=${courseName}`,
+        url: `/pages/study/detail/detail?course=${course.name}&cover=${course.cover}`,
       });
     }
   }

@@ -4,18 +4,24 @@
             《{{courseName}}》
         </div>
 
-        <uni-collapse v-for="item in files" :key="item.file">
-            <uni-collapse-item :title="item.name" :open="false">
+        <uni-collapse v-for="item in files" :key="item.file" :showAnimation="true" :accordion="true">
+            <uni-collapse-item :title="item.name" :open="false" :thumb="cover">
                 <div v-if="item.file===undefined">暂无课程文件</div>
-                <video :src="item.file"
-                       controls>
-                </video>
 
-<!--                <uni-list>-->
-<!--                    <uni-list-item>-->
-<!--                        {{item.file}}-->
-<!--                    </uni-list-item>-->
-<!--                </uni-list>-->
+                <div class="detail-video">
+                    <video
+                            :title="item.name"
+                            class="video-self"
+                            :src="item.file"
+                            v-if="item.file.length>0
+                            && item.type!=='jpg'
+                            && item.type!=='png'
+                            && item.type!=='gif'
+                            && item.type!=='svg'
+                            && item.type!=='webp'"
+                            controls>
+                    </video>
+                </div>
             </uni-collapse-item>
         </uni-collapse>
     </div>
@@ -28,11 +34,13 @@
   @Component({})
   export default class CourseDetail extends Vue {
     courseName: string = '';
+    cover: string = '';
     files: [] = [];
 
     async onLoad(option) {
       if (option.hasOwnProperty('course')) {
         this.courseName = option.course;
+        this.cover = option.cover;
       }
     }
 
@@ -50,32 +58,28 @@
         uni.hideLoading();
       }
     }
-
-
-    // this.current.poster = this.data[0].cover;
-    // this.current.name = this.data[0].name;
-    // let [, file]: any = await API.get(`courses/${this.current.name}`);
-    // let files = file.data;
-    // console.log(this.data);
-    // console.log(files);
-    // files.forEach(v => {
-    //   if (v.type === 'mp3' || v.type === 'm4a' ) {
-    //     this.current.name = v.name;
-    //     this.current.src = v.file;
-    //   }
-    //   if (v.type === 'mp4') {
-    //       this.video.src = v.file
-    //   }
-    //
-    //
-    // });
   }
 
 </script>
 
 <style lang="scss" scoped>
     .detail-name {
+        width: 100%;
+        height: 150rpx;
+        line-height: 150rpx;
         font-size: 24px;
         text-align: center;
+        border-bottom: 1px solid #cccccc;
     }
+
+    .detail-video {
+        display: flex;
+        justify-content: center;
+    }
+
+    .video-self {
+        width: 100%;
+        height: 400rpx;
+    }
+
 </style>
