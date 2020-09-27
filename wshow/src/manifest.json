@@ -67,5 +67,8 @@
     },
     "mp-qq" : {
         "usingComponents" : true
+    },
+    "networkTimeout": {
+        "request": 70000
     }
 }

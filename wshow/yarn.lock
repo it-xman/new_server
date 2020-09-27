@@ -1030,6 +1030,11 @@
     "@babel/types" "^7.3.3"
     vue-template-compiler "^2.6.10"
 
+"@dcloudio/uni-ui@^1.2.5":
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@dcloudio/uni-ui/-/uni-ui-1.2.5.tgz#d9bcb6f93cb8fe13146bfaa0f9cb61a6816dcfef"
+  integrity sha512-HAeE/wIWyXb7z1dmWuETSfS3/fUL21dyUqEE1ppwOYiFBNt9Kh5M6Yp+18CcI7Y1GBQhWLyhTipN6Aj2fx8EPw==
+
 "@dcloudio/vue-cli-plugin-hbuilderx@^2.0.0-28920200923001":
   version "2.0.0-28920200923001"
   resolved "https://registry.yarnpkg.com/@dcloudio/vue-cli-plugin-hbuilderx/-/vue-cli-plugin-hbuilderx-2.0.0-28920200923001.tgz#b57557b718353f75e62b43bffa3ee7c3ea150bac"
@@ -1763,11 +1768,6 @@
   integrity sha512-Gf4u3EjaPNcC9cTu4/j2oN14nSVhr8PQ+BvBcBQHAhDZfl0bVIiLgvnRXv/dn58XhTm9UXvBpvJpDlwV65QxOA==
   dependencies:
     "@types/yargs-parser" "*"
-
-"@vant/weapp@^1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@vant/weapp/-/weapp-1.5.0.tgz#18b0b77ee8133eb53ffd6c1ed9cf70c51d24e736"
-  integrity sha512-4hBH8U3/GQID+N1fV0m4dTbVR0R0iN06Zr2Xd9XFI2MvYXqtAWCrPkJ5umLxFF1MpZjlS/20V50MsGICgwZBug==
 
 "@vue/babel-helper-vue-jsx-merge-props@^1.0.0":
   version "1.0.0"

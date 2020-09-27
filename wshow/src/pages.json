@@ -10,7 +10,7 @@
     {
       "path": "pages/study/study",
       "style": {
-        "navigationBarTitleText": "学习"
+        "navigationBarTitleText": "课程"
       }
     },
     {
@@ -18,34 +18,36 @@
       "style": {
         "navigationBarTitleText": "我的"
       }
+    },
+    {
+      "path": "pages/study/detail/detail",
+      "style": {
+        "navigationBarTitleText": "课程详情"
+      }
     }
   ],
   "tabBar": {
     "color": "#7A7E83",
-    "selectedColor": "#3cc51f",
+    "selectedColor": "#1296db",
     "borderStyle": "black",
     "backgroundColor": "#ffffff",
-    "height": "50px",
-    "fontSize": "10px",
-    "iconWidth": "24px",
-    "spacing": "3px",
     "list": [
       {
         "pagePath": "pages/home/home",
-        //        "iconPath": "static/image/icon_component.png",
-        //        "selectedIconPath": "static/image/icon_component_HL.png",
+        "iconPath": "static/tabbar/home_center.png",
+        "selectedIconPath": "static/tabbar/home_center_active.png",
         "text": "首页"
       },
       {
         "pagePath": "pages/study/study",
-        //        "iconPath": "static/image/icon_API.png",
-        //        "selectedIconPath": "static/image/icon_API_HL.png",
-        "text": "学习"
+        "iconPath": "static/tabbar/study_center.png",
+        "selectedIconPath": "static/tabbar/study_center_active.png",
+        "text": "课程"
       },
       {
         "pagePath": "pages/user/user",
-        //        "iconPath": "static/image/icon_API.png",
-        //        "selectedIconPath": "static/image/icon_API_HL.png",
+        "iconPath": "static/tabbar/user_center.png",
+        "selectedIconPath": "static/tabbar/user_center_active.png",
         "text": "我的"
       }
     ]
@@ -54,44 +56,14 @@
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uni-app",
     "navigationBarBackgroundColor": "#F8F8F8",
-    "backgroundColor": "#F8F8F8",
-    "usingComponents": {
-      "van-button": "wxcomponents/@vant/button/index",
-      "van-datetime-picker": "wxcomponents/@vant/datetime-picker/index",
-      "van-area": "wxcomponents/@vant/area/index",
-      "van-checkbox": "wxcomponents/@vant/checkbox/index",
-      "van-checkbox-group": "wxcomponents/@vant/checkbox-group/index",
-      "van-picker": "wxcomponents/@vant/picker/index",
-      "van-cell": "wxcomponents/@vant/cell/index",
-      "van-cell-group": "wxcomponents/@vant/cell-group/index",
-      "van-popup": "wxcomponents/@vant/popup/index",
-      "van-tabs": "wxcomponents/@vant/tabs/index",
-      "van-tab": "wxcomponents/@vant/tab/index",
-      "van-radio": "wxcomponents/@vant/radio/index",
-      "van-radio-group": "wxcomponents/@vant/radio-group/index",
-      "van-tag": "wxcomponents/@vant/tag/index",
-      "van-field": "wxcomponents/@vant/field/index",
-      "van-toast": "wxcomponents/@vant/toast/index",
-      "van-switch": "wxcomponents/@vant/switch/index",
-      "van-divider": "wxcomponents/@vant/divider/index",
-      "van-action-sheet": "wxcomponents/@vant/action-sheet/index",
-      "van-dialog": "wxcomponents/@vant/dialog/index",
-      "van-swipe-cell": "wxcomponents/@vant/swipe-cell/index",
-      "van-index-bar": "wxcomponents/@vant/index-bar/index",
-      "van-index-anchor": "wxcomponents/@vant/index-anchor/index",
-      "van-loading": "wxcomponents/@vant/loading/index"
-    }
+    "backgroundColor": "#F8F8F8"
   },
   "condition": {
-    //模式配置，仅开发期间生效
     "current": 0,
-    //当前激活的模式（list 的索引项）
     "list": [
       {
-        "name": "test",
-        //模式名称
-        "path": "pages/component/view/index"
-        //启动页面，必选
+        "name": "study",
+        "path": "pages/study/study"
       }
     ]
   }

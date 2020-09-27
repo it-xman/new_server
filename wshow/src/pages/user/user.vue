@@ -1,22 +1,16 @@
 <template>
-	<view>
-		
-	</view>
+    <div>
+    </div>
 </template>
 
-<script>
-	export default {
-		data() {
-			return {
-				
-			}
-		},
-		methods: {
-			
-		}
-	}
+<script lang="ts">
+  import { Component, Vue } from 'vue-property-decorator';
+
+  @Component({})
+  export default class UserCenter extends Vue {
+  }
+
 </script>
 
 <style>
-
 </style>

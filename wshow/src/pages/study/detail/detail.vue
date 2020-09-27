@@ -1,0 +1,54 @@
+<template>
+    <div>
+        <div class="detail-name">
+            《{{courseName}}》
+        </div>
+    </div>
+</template>
+
+<script lang="ts">
+  import { Component, Vue } from 'vue-property-decorator';
+
+  @Component({})
+  export default class CourseDetail extends Vue {
+    courseName: string = ''
+
+  	onLoad(option) {
+      this.courseName = option.course
+	}
+
+	async mounted() {
+
+
+
+
+
+    }
+
+	  // this.current.poster = this.data[0].cover;
+	  // this.current.name = this.data[0].name;
+	  // let [, file]: any = await API.get(`courses/${this.current.name}`);
+	  // let files = file.data;
+	  // console.log(this.data);
+	  // console.log(files);
+	  // files.forEach(v => {
+	  //   if (v.type === 'mp3' || v.type === 'm4a' ) {
+	  //     this.current.name = v.name;
+	  //     this.current.src = v.file;
+	  //   }
+	  //   if (v.type === 'mp4') {
+	  //       this.video.src = v.file
+	  //   }
+	  //
+	  //
+	  // });
+  }
+
+</script>
+
+<style lang="scss" scoped>
+    .detail-name {
+        font-size: 24px;
+        text-align: center;
+    }
+</style>

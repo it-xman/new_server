@@ -19,18 +19,30 @@ export class API {
   }
 
   static get(url, config = null) {
+    uni.showLoading({
+      title: '加载中',
+    });
     return this.config(url, 'GET', config);
   }
 
-  static post(url, config = null) {
+  static post(url, config) {
+    uni.showLoading({
+      title: '发送中',
+    });
     return this.config(url, 'POST', config);
   }
 
-  static put(url, config = null) {
+  static put(url, config) {
+    uni.showLoading({
+      title: '修改中',
+    });
     return this.config(url, 'PUT', config);
   }
 
-  static delete(url, config = null) {
+  static delete(url, config) {
+    uni.showLoading({
+      title: '删除中',
+    });
     return this.config(url, 'DELETE', config);
   }
 }
