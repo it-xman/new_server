@@ -1,6 +1,6 @@
 {
-  "name": "admin_back",
-  "version": "0.1.0",
+  "name": "小鹰学习后台管理",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
