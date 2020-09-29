@@ -14,7 +14,7 @@ export class UploadController {
       this.db = new Minio.Client({
         endPoint: process.env.ENDPOINT,
         port: parseInt(process.env.PORT),
-        useSSL: false,
+        useSSL: true,
         accessKey: process.env.ACCESS_KeEY,
         secretKey: process.env.SECRET_KEY,
       });
@@ -44,7 +44,7 @@ export class UploadController {
     let res = await this.DB().putObject(id, file.originalname, file.buffer, metaData);
     if (res) {
       return {
-        url: await this.DB().presignedUrl('GET', id, file.originalname),
+        url: `https://${process.env.ENDPOINT}:${process.env.PORT}/${id}/${file.originalname}`
       };
     }
     return {
