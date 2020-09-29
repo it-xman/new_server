@@ -7,7 +7,6 @@
         <uni-collapse v-for="item in files" :key="item.file" :showAnimation="true" :accordion="true">
             <uni-collapse-item :title="item.name" :open="false" :thumb="cover">
                 <div v-if="item.file===undefined">暂无课程文件</div>
-
                 <div class="detail-video">
                     <video
                             :title="item.name"
@@ -38,10 +37,16 @@
     files: [] = [];
 
     async onLoad(option) {
+      let that = this;
       if (option.hasOwnProperty('course')) {
         this.courseName = option.course;
-        this.cover = option.cover;
       }
+      await uni.getStorage({
+        key: 'cover',
+        success(res) {
+          that.cover = res.data
+        },
+      });
     }
 
     async mounted() {

@@ -36,14 +36,9 @@
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator';
   import { API } from '@/framework/api';
-  // import uniCard from '@dcloudio/uni-ui/lib/uni-card/uni-card.vue';
-  // import uniPagination from '@dcloudio/uni-ui/lib/uni-pagination/uni-pagination.vue';
 
   @Component({
-    components: {
-      // uniCard,
-      // uniPagination,
-    },
+    components: {},
   })
   export default class StudyCenter extends Vue {
     courseData: string[] = [];
@@ -97,8 +92,13 @@
     }
 
     async detail(course) {
+      uni.setStorage({
+        key: 'cover',
+        data: course.cover,
+      });
+
       uni.navigateTo({
-        url: `/pages/study/detail/detail?course=${course.name}&cover=${course.cover}`,
+        url: `/pages/study/detail/detail?course=${course.name}`,
       });
     }
   }

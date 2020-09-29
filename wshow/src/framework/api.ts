@@ -3,8 +3,8 @@ export class API {
 
   static baseURL() {
     if (process.env.NODE_ENV === 'development') {
-      // this._baseUrl = 'https://atlantide.top:3003/v1';
-      this._baseUrl = 'http://127.0.0.1:3003/v1';
+      this._baseUrl = 'https://eaglet.club:3003/v1';
+      // this._baseUrl = 'http://127.0.0.1:3003/v1';
     } else {
       this._baseUrl = 'https://eaglet.club:3003/v1';
       // this._baseUrl = 'http://127.0.0.1:3003/v1';
