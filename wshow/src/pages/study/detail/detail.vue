@@ -50,7 +50,7 @@
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator';
   import { API } from '@/framework/api';
-  import AudioEx from '@/components/audio-ex/index.vue';
+  import AudioEx from '@/components/audio-ex/audio-ex.vue';
 
   @Component({
     components: {

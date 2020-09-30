@@ -1,6 +1,12 @@
 <template>
 	<view class="audo-video">
-		<video id="myVideo" :src="url" class="hidden" @timeupdate="timeupdate" ref="video" @loadedmetadata="loadedmetadata" ></video>
+		<video id="myVideo"
+			   :src="url"
+			   class="hidden"
+			   @timeupdate="timeupdate"
+			   ref="video"
+			   @loadedmetadata="loadedmetadata" >
+		</video>
 
 		<view class="slider-box">
 			<text class="mm">{{timer}}</text>
@@ -20,13 +26,13 @@
 			<text class="ss">{{overTimer}}</text>
 		</view>
 
-		<button @tap="play">播放</button>
-		<button @tap="stop">暂停</button>
-		<button @tap="setRate(0.5)">0.5倍</button>
-		<button @tap="setRate(0.75)">0.75倍</button>
-		<button @tap="setRate(1)">1倍</button>
-		<button @tap="setRate(1.5)">1.5倍</button>
-		<button @tap="setRate(2)">2倍</button>
+		<button @click="play">播放</button>
+		<button @click="stop">暂停</button>
+<!--		<button @click="setRate(0.5)">0.5倍</button>-->
+<!--		<button @click="setRate(0.75)">0.75倍</button>-->
+<!--		<button @click="setRate(1)">1倍</button>-->
+<!--		<button @click="setRate(1.5)">1.5倍</button>-->
+<!--		<button @click="setRate(2)">2倍</button>-->
 
 
 	</view>
